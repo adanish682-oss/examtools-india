@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Resize and compress passport photos and signatures for online application forms. Free browser-based tool.">
+<title>ExamTools India — Photo & Signature Resizer</title>
+<style>
+:root{--ink:#172033;--muted:#667085;--brand:#2457d6;--bg:#f4f7fb;--line:#dfe5ef;--white:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+header{background:#fff;border-bottom:1px solid var(--line)}.nav{max-width:1050px;margin:auto;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-weight:800;font-size:1.12rem;letter-spacing:-.03em}.brand span{color:var(--brand)}.tag{font-size:.82rem;color:var(--muted)}
+main{max-width:1050px;margin:35px auto;padding:0 20px}.hero{text-align:center;margin-bottom:26px}.hero h1{font-size:clamp(1.8rem,4vw,2.65rem);line-height:1.12;letter-spacing:-.04em;margin:0 0 12px}.hero p{color:var(--muted);max-width:650px;margin:0 auto}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}.panel{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 6px 22px #18264b08}.panel h2{font-size:1.08rem;margin:0 0 16px}.field{margin:14px 0}.field label{display:block;font-size:.9rem;font-weight:650;margin-bottom:6px}.field input,.field select{width:100%;padding:11px 12px;border:1px solid #cbd4e2;border-radius:10px;background:#fff;color:var(--ink);font:inherit}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:12px}.help{font-size:.82rem;color:var(--muted);margin-top:5px}.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:10px;padding:12px 16px;font:inherit;font-weight:750;cursor:pointer;text-decoration:none}.primary{background:var(--brand);color:#fff;width:100%}.secondary{background:#eaf0ff;color:#2149ac;width:100%;margin-top:10px}.btn:disabled{opacity:.45;cursor:not-allowed}.drop{border:1.5px dashed #aab9d3;border-radius:14px;padding:22px;text-align:center;background:#f9fbff}.drop input{max-width:100%;margin-top:10px}.preview{margin-top:14px;text-align:center}.preview img{max-width:100%;max-height:250px;border:1px solid var(--line);border-radius:10px;background:repeating-conic-gradient(#f0f2f6 0% 25%,white 0% 50%) 50%/16px 16px}.status{font-size:.9rem;margin-top:12px;min-height:1.4em;color:var(--muted)}.status.error{color:#b42318}.status.good{color:#067647}.info{margin-top:20px;padding:16px 18px;background:#edf3ff;border-radius:14px;color:#263b68;font-size:.9rem}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}.feature{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;font-size:.9rem}.feature strong{display:block;margin-bottom:4px}.privacy{font-size:.82rem;color:var(--muted);margin-top:12px}footer{text-align:center;color:var(--muted);padding:28px 20px;font-size:.82rem}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.features{grid-template-columns:1fr}.panel{padding:18px}main{margin-top:25px}.tag{display:none}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="brand">ExamTools <span>India</span></div><div class="tag">Free tools for application forms</div></div></header>
+<main>
+<section class="hero"><h1>Photo & Signature Resizer</h1><p>Resize and compress an image for an online application form. Your image is processed in this browser and is not uploaded to a server.</p></section>
+<div class="layout">
+<section class="panel">
+<h2>1. Choose your image</h2>
+<div class="drop"><strong>Select a photo or signature</strong><div class="help">JPG, PNG or WebP · Recommended maximum 10 MB</div><input id="file" type="file" accept="image/jpeg,image/png,image/webp"></div>
+<div class="field"><label for="preset">Quick preset</label><select id="preset"><option value="413x531">Passport photo — 413 × 531 px (approx. 3.5 × 4.5 cm at 300 DPI)</option><option value="200x100">Signature — 200 × 100 px</option><option value="300x300">Square image — 300 × 300 px</option><option value="custom">Custom dimensions</option></select><div class="help">Always follow the exact size rules in your application notice.</div></div>
+<div class="twocol"><div class="field"><label for="width">Width (pixels)</label><input id="width" type="number" min="1" max="4000" value="413"></div><div class="field"><label for="height">Height (pixels)</label><input id="height" type="number" min="1" max="4000" value="531"></div></div>
+<div class="field"><label for="kb">Target file size (KB, approximate)</label><input id="kb" type="number" min="10" max="10000" value="100"><div class="help">Compression target is approximate; results depend on image content.</div></div>
+<div class="field"><label for="fit">Fit image</label><select id="fit"><option value="contain">Fit inside dimensions (no cropping)</option><option value="cover">Fill dimensions (crop edges)</option><option value="stretch">Stretch to exact dimensions</option></select></div>
+<button class="btn primary" id="make" disabled>Resize & compress image</button>
+<div class="privacy">Privacy: image processing happens locally in your browser.</div>
+</section>
+<section class="panel">
+<h2>2. Preview and download</h2>
+<div id="empty" class="drop"><strong>Your resized image will appear here</strong><p class="help">Choose an image, select dimensions, then press Resize.</p></div>
+<div class="preview"><img id="result" alt="Resized image preview" hidden></div>
+<div id="details" class="status" aria-live="polite">No image processed yet.</div>
+<a id="download" class="btn secondary" href="#" download="examtools-resized.jpg" hidden>Download resized JPG</a>
+<div id="message" class="status" aria-live="polite"></div>
+<div class="info"><strong>Before submitting:</strong> Check the recruitment or exam notification for required pixel dimensions, file format, file-size range, and whether the photo background or signature format has special rules.</div>
+</section>
+</div>
+<div class="features">
+<div class="feature"><strong>Fast and simple</strong>Resize an image in a few steps without an account.</div>
+<div class="feature"><strong>Browser-based privacy</strong>Your selected image stays on your device while this page is open.</div>
+<div class="feature"><strong>Made for forms</strong>Choose a preset or enter the dimensions listed by the application portal.</div>
+</div>
+</main>
+<footer>ExamTools India · Free online utility · Always verify the official application requirements.</footer>
+<script>
+const $=id=>document.getElementById(id);
+let sourceImage=null, outputUrl=null, sourceName='image';
+$('file').addEventListener('change',()=>{
+  $('message').textContent='';$('message').className='status';
+  const f=$('file').files[0]; if(!f){sourceImage=null;$('make').disabled=true;return;}
+  if(!/^image\/(jpeg|png|webp)$/.test(f.type)){showError('Please select a JPG, PNG or WebP image.');return;}
+  if(f.size>10*1024*1024){showError('Please choose an image smaller than 10 MB.');return;}
+  const reader=new FileReader();
+  reader.onload=()=>{const img=new Image();img.onload=()=>{sourceImage=img;sourceName=(f.name||'image').replace(/\.[^.]+$/,'');$('make').disabled=false;$('message').className='status good';$('message').textContent=`Image ready: ${img.naturalWidth} × ${img.naturalHeight} px.`;};img.onerror=()=>showError('The image could not be opened. Try another file.');img.src=reader.result;};
+  reader.readAsDataURL(f);
+});
+$('preset').addEventListener('change',()=>{const v=$('preset').value;if(v!=='custom'){const [w,h]=v.split('x');$('width').value=w;$('height').value=h;}});
+function showError(t){$('message').className='status error';$('message').textContent=t;$('make').disabled=!sourceImage;}
+$('make').addEventListener('click',async()=>{
+ if(!sourceImage)return;
+ const w=Number($('width').value),h=Number($('height').value),target=Number($('kb').value),fit=$('fit').value;
+ if(!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||w>4000||h>4000){showError('Enter width and height from 1 to 4000 pixels.');return;}
+ if(!Number.isFinite(target)||target<10||target>10000){showError('Enter a target size between 10 and 10000 KB.');return;}
+ $('make').disabled=true;$('message').className='status';$('message').textContent='Processing image…';
+ try{
+   const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');
+   ctx.fillStyle='#ffffff';ctx.fillRect(0,0,w,h);
+   if(fit==='stretch'){ctx.drawImage(sourceImage,0,0,w,h);}
+   else {const scale=fit==='cover'?Math.max(w/sourceImage.naturalWidth,h/sourceImage.naturalHeight):Math.min(w/sourceImage.naturalWidth,h/sourceImage.naturalHeight);const dw=sourceImage.naturalWidth*scale,dh=sourceImage.naturalHeight*scale;ctx.drawImage(sourceImage,(w-dw)/2,(h-dh)/2,dw,dh);}
+   let quality=.92,blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',quality));
+   const maxBytes=target*1024;
+   while(blob&&blob.size>maxBytes&&quality>.25){quality=Math.max(.25,quality-.08);blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',quality));}
+   if(!blob)throw new Error('Could not create the resized image.');
+   if(outputUrl)URL.revokeObjectURL(outputUrl);outputUrl=URL.createObjectURL(blob);
+   $('result').src=outputUrl;$('result').hidden=false;$('empty').hidden=true;$('download').href=outputUrl;$('download').download=`${sourceName || 'image'}-resized.jpg`;$('download').hidden=false;
+   const actual=(blob.size/1024).toFixed(1);
+   $('details').textContent=`Output: ${w} × ${h} px · ${actual} KB · JPG`;
+   $('message').className=blob.size>maxBytes?'status':'status good';
+   $('message').textContent=blob.size>maxBytes?'The image is resized, but its file size is above the target. Try a larger target or smaller dimensions.':'Ready to download. Please verify the final dimensions and size against your form requirements.';
+ }catch(e){showError(e.message||'Something went wrong. Please try another image.');}
+ finally{$('make').disabled=!sourceImage;}
+});
+</script>
+</body>
+</html>
